@@ -1,0 +1,99 @@
+Jenkins Summary
+Before JENKINS:
+Before jenkins, when developers upload their codes into the repository, they will have problem as they may upload their codes at irregular times if they are based at different countries.
+There will be issue with integration and there will be an increase in bugs. Before this, we have to wait for the software code to be fully built then we can check for errors. Process of delivering software was slow and there is no way to iterate the software.
+
+WHAT IS JENKINS ?
+Jenkins is an open-source automation tool written in Java with plugins built for Continuous Integration purposes, in which the developers are able to commit changes to the source code in a shared repository frequently.
+
+Every commit made in the repository is then built, allowing the teams to detect the problems early.  Previously, developers had to wait for the entire software to be built before they could be sent for testing. But with CI/CD, there is the advantage of being able to create this feedback loop of continuous integration with the Jenkins server to ensure the bugs are detected simultaneously while building the software. There are several other functions like deploying the build application on the test server, providing the teams with the build and test results, etc.
+
+
+Manage JENKINS 
+View as a main menu for all jenkins configuration
+*Configure system 
+Where we  put the complete the configure for the complete jenkins instance
+- Home directory (configuration/ everything and anything can be found here)
+-System message something u want to say will be shown on top
+-No of executors 	
+Let Jenkins know at any point in time how many jobs or how many thread can be run on this instance. If more than amount of job is being deployed. It will be in a Q and get deploy later. Whenever a job get trigger the cpu usage and memory usage in terms of the disk write is very high on Jenkins instance
+-Email notifications
+-In case email will to use email notification will have to fill this section. Ensure security id of Gmail is lowered default won’t allow to send out 
+
+Global tool configuration
+-jenkins is a CI server. It doesn’t know what kind of code base its going to pull in. what tools it is needed or what code is going to pull in or how is going to build.
+This is the place to put in all the tools that is required for building the appropriate kind of code that we going to pull in from the source code repositories.
+ Example JDK, GIT, Mavens.
+Every tool that is needed for our system, will need to configure something. So if we did not configure when Jenkins run, it will not be able to find the tools needed to build the task 
+
+
+JENKINS - Plugins 
+
+Jenkins provides two methods for installing plugins on the controller:
+Using the "Plugin Manager" in the web UI.
+Using the Jenkins CLI install-plugin command.
+There are 2 methods of installing plugins
+1)Through the use of available updates tab
+2)Through the use of advanced feature, for private plugins managed by an organisation
+
+
+JENKINS - Pipeline
+
+Jenkins Pipeline (or simply "Pipeline" with a capital "P") is a suite of plugins which supports implementing and integrating continuous delivery pipelines into Jenkins.
+
+A continuous delivery (CD) pipeline is an automated expression of your process for getting software from version control right through to your users and customers. Every change to your software (committed in source control) goes through a complex process on its way to being released.
+
+JENKINS - Interface
+Upon log in, able to create new job, ‘e.g. freestyle project’, schedule the execution of existing jobs, navigate into defined jobs on the system, and more. The configuration panel includes a couple of features such as new items, manage Jenkins, build History, People etc.
+
+Under system configuration, it is possible to manage the plug ins, configure global settings, manage nodes and access global tool configuration (all data stored in /var/lib/jenkins)
+Security allows for people management who can access that Jenkins account 
+Status information contains system logs and troubleshooting information
+Tools and actions contains Jenkins CLI, script console and reload configuration from disk which enables for discarding loaded data in memory and reload using file system 
+  
+Build history shows the log of the jobs created, which are the past builds, time since build and the status of each build. 
+
+JENKINS - Managing Nodes
+
+Jenkins controller - is the jenkins service itself, acting as a controller for deciding when how and what tasks to run. 
+
+Nodes - Are machines on which build agents run. Jenkins controller monitors each of these nodes parameters and is taken offline if the threshold is breached
+
+Agents - Are something related to processes that execute a task on behalf of the Jenkins controller. 
+
+Executors - Is a slot for execution of tasks, like a thread in the agent, the number of executors in a node determine the number of concurrent tasks that are executable at any time.
+
+JENKINS - How to integrate Your GitHub Repository to Your Jenkins Project
+There are mainly some steps required to integrate Github codes and trigger Jenkins to auto build after a code commit
+On Github
+Step 1 : Add webhook on github
+Step 2 : enter jenkins environment url : In the case of our servers, enter ipv4:8080 as the URL, content type application/json and leave secret empty
+Step 3 : Check boxes that we would like webhooks to be triggered, select pull requests and pushes
+JENKINS- Global Tool Configuration
+
+On Jenkin
+Step 1 : select ‘new item’
+Step 2: give it a new project name
+Step 3 : select source code management
+Step 4 paste the github repository, wih      9ew
+Similar to GitHub, in order for us to a clone our repository we need the git terminal. In the global configuration tool, Jenkins requires the JDK tool.
+
+To configure JDK:
+Deploy the Jenkins.war into the tomcat server and start the server.
+From the home page, click on the link Manage Jenkins and click on Configure System as shown below :
+From the next page, click on "Add JDK". The easiest way to configure JDK is to provide a name and path of the java installation directory. (Consider the same path used for JAVA_HOME). In the below screenshot JDK 6 and JDK 7 has been configured,
+JDK can also be installed by intimating Jenkins to do the task. The check box install automatically needs to be checked in this case. Jenkins will download and installs the specified version of the JDK into the tools directory of the Jenkins home directory
+JDK can also be installed by intimating Jenkins to do the task. The check box install automatically needs to be checked in this case. Jenkins will download and installs the specified version of the JDK into the tools directory of the Jenkins home directory
+ 
+JENKINS - Security:
+For security portion in Jenkins, there are two aspects to it. Access control which ensures Jenkins 
+The security realm: this determines users and their passwords, as what as what groups the users belong to.
+Authorization Strategy: this determines who has access to what.
+The two axes are independent and need to be individually configured. For instance: you can choose external LDAP(LIGHTweight directory access protocol) or active directory as mode for authorization strategy or choose to let jenkins to run its own user database and perform access control based on permission/user matrix.
+ 
+1) Quick and Simple Security: you only need very simple security.
+2)Standard  Security Setup: this discusses common set up of letting jenkins run  its own database and do finer access gained control.
+3)Apache frontend for security : this runs Jenkins behind Apache and perform access control in apache instead of Jenkins
+4) Authenticating Scripted files:if you need to programmatically access security-enabled Jenkins web UI, use BASIC auth
+5)Matrix-based security|Matrix-based security --- Granting and denying finer-grained permissions
+ 
