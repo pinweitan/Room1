@@ -1,0 +1,69 @@
+Exercise: Dynamic Tracing
+
+Task 1 (Ticket 1)
+Microservice is down which doesn’t allow for analysis function as the container died. 
+Conflict in input due to multiple request
+NoSQL Database server is down which prevent drawing of information 
+This is shown in the logs : Microservice showing logs about not finding data, which would mean the database providing data to the microservice is unavailable.
+
+Ticket 2 ***
+Analysis - User reports limited number of stocks, implying maybe only a small amount of data is available for analysis that the microservice was able to retrieve.
+Message queue issues may have been resolved by itself due to a bottleneck earlier due to high number of requests. This could have resolve part of the analysis issues users are facing
+
+Ticket 3
+Approximately 30 mins after logs showing errors, there could be a more serious bug that affected users not being able to see analyses after 10am. The error logs showed errors from 930am onwards
+
+Ticket 4
+After checking the release calendar, we found out that Lambda update last night may have caused issues to the affected services due to a feature update.
+Incompatibility with the users’ server after updating.
+
+
+Organise your ideas in the priority of which you think most likely.
+1)Update failure of the Lambda Function (simplistic calculation tools for the users), causing intermittent issues (dashboard that shows one of the feeds is "flapping")
+2)NoSQL Database server down , not able to access live prices but able to access prices before 10am, from their stocks data saved in regular SQL server (M/R)
+3)Microservice is down which doesn’t allow for analysis function as the container died as stated in error logs from 930am 
+4)Message queues having many requests, caused some of the systems' stocks to not be seen.
+
+ 
+SRE (SUMMARY)
+SLI - quantitative metrics to measure the level of service which is provided such as (also known as the 4 golden signals of monitoring): 
+Latency- how much times it takes for data travel one point to another
+Traffic- Amount of data moving across a network
+Error rate
+Saturation
+These directly indicate the health, availability, and performance of a service 
+E.g. Ratio of errors to the total requests received in the past 5mins
+
+SLO - Service Level Objectives specifies a target level of reliability of the system. These are numerical reliability or performance targets that a developer or an SRE should maintain while building and scaling a product. They can be defined by the collection of SLIs over a period of time and using it as a threshold. The core purpose of SLOs is to quantify customer reliability of the product and services.
+E.g. response latency of an application defined to be within a range of 1–2ms for it to be reliably available.
+On the other hand, by allowing service to exceed SLO level, it creates a high expectation for users whereby a slight drop might create dissatisfaction to them, even if it's still at your SLO level. New feature rollouts are less prevalent in order to maintain the high SLO level, since more downtimes occur during such updates
+ 
+ 
+SLA - A service-level agreement (SLA) defines the level of service you expect from a vendor, laying out the metrics by which service is measured, as well as remedies or penalties should agreed-on service levels not be achieved. It is a critical component of any technology vendor contract.
+So basically its a contract to define the metric goals company will provide for the client. In the event of company not being able to fulfill his metric obligations, the payment will be reduced. They are integral part 
+An example is : A telecom company’s SLA, for example, may promise network availability of 99.999 percent (for the mathematically disinclined, that works out to about five and a quarter minutes of downtime per year, which, believe it or not, can still be too long for some businesses), and allow the customer to reduce their payment by a given percentage if that is not achieved, usually on a sliding scale based on the magnitude of the breach.
+
+Components in SLA
+The SLA should include components in two areas: services and management.
+Service elements include specifics of services provided (and what’s excluded, if there’s room for doubt), conditions of service availability, standards such as time window for each level of service (prime time and non-prime time may have different service levels, for example), responsibilities of each party, escalation procedures, and cost/service tradeoffs.
+Management elements should include definitions of measurement standards and methods, reporting processes, contents and frequency, a dispute resolution process, an indemnification clause protecting the customer from third-party litigation resulting from service level breaches (this should already be covered in the contract, however), and a mechanism for updating the agreement as required.
+This last item is critical; service requirements and vendor capabilities change, so there must be a way to make sure the SLA is kept up-to-date.
+
+What kind of metrics should be monitored?
+The types of SLA metrics required will depend on the services being provided. Many items can be monitored as part of an SLA, but the scheme should be kept as simple as possible to avoid confusion and excessive cost on either side. In choosing metrics, examine your operation and decide what is most important. The more complex the monitoring (and associated remedy) scheme, the less likely it is to be effective, since no one will have time to properly analyze the data. When in doubt, opt for ease of collection of metric data; automated systems are best, since it is unlikely that costly manual collection of metrics will be reliable.
+Depending on the service, the types of metric to monitor may include:
+Service availability: the amount of time the service is available for use. This may be measured by time slot, with, for example, 99.5 percent availability required between the hours of 8 a.m. and 6 p.m., and more or less availability specified during other times. E-commerce operations typically have extremely aggressive SLAs at all times; 99.999 percent uptime is a not uncommon requirement for a site that generates millions of dollars an hour.
+Defect rates: Counts or percentages of errors in major deliverables. Production failures such as incomplete backups and restores, coding errors/rework, and missed deadlines may be included in this category.
+Technical quality: in outsourced application development, measurement of technical quality by commercial analysis tools that examine factors such as program size and coding defects.
+Security: In these hyper-regulated times, application and network security breaches can be costly. Measuring controllable security measures such as anti-virus updates and patching is key in proving all reasonable preventive measures were taken, in the event of an incident.
+Business results: Increasingly, IT customers would like to incorporate business process metrics into their SLAs. Using existing key performance indicators is typically the best approach as long as the vendor’s contribution to those KPIs can be calculated.
+
+ 
+ERROR BUDGETS:
+An error budget is the amount of error that your service can accumulate over a certain period of time before your users start being unhappy. You can think of it as the pain tolerance for your users, but applied to a certain dimension of your service: availability, latency. The error budget will be calculated based on what is the remainder of the SLO objectives set. (e.g if SLO is 95%, error budget is 5%)
+Budget spend attribution
+Failure log links presented in a dashboard can be ordered by the number of errors. Prioritising fixing the top offenders in these tables will have the biggest impact on the budget spent. This allows budget spend attribution
+ 
+ 
+Maiintenance windows
+Maintenance windows are planned in advance by technicians and are mainly conducted to improve user experience (reduce likelihood of service downtime, etc) These maintenance windows should be conducted preferably in the hours where service usage is at the minimum or not at all.
