@@ -1,0 +1,39 @@
+
+TASK 1
+
+groups:
+- name: AllInstances
+  rules:
+  - alert: InstanceDown
+    # Condition for alerting
+    expr: up == 0
+    for: 1m
+    # Annotation - additional informational labels to store more information
+    annotations:
+      title: 'Instance {{ $labels.instance }} down'
+      description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minute.'
+    # Labels - additional labels to be attached to the alert
+    labels:
+      severity: 'critical'
+
+
+
+1. The average total CPU usage over the last hour should not exceed 1% on any node.
+
+- alert: HostHighCpuLoad
+    expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[60m])) * 100) > 1
+    for: 0m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host high CPU load (instance {{ $labels.instance }})
+      description: "CPU load is > 1%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+2. The average total container_network_transmit_errors_total not to exceed 1% for any pod in our application in the last 10 minutes.
+
+#using EC2, containerised application not setup, 
+
+
+TASK 3
+Add the SLO alerts created in Task 1 to your Grafana dashboard.
+ANS: Imported Promethues Alerts dashboard to Grafana to monitor alerts from prometheus which are pending or fired
